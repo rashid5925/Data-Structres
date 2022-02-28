@@ -58,12 +58,12 @@ int main()
             palindrome();
             if (palindrome())
             {
-                cout << "*****Palindrome*****\n";
+                cout << "******Palindrome******\n";
                 cout << "\n";
             }
             else
             {
-                cout << "*****Not Palindrome*****\n";
+                cout << "******Not Palindrome******\n";
                 cout << "\n";
             }
             break;

@@ -248,6 +248,7 @@ bool palindrome()
     return true;
 }
 
+<<<<<<< HEAD:linked_list_operations_2.cpp
 void swap()
 {
     int id1, id2, temp_id;
@@ -273,3 +274,8 @@ void swap()
         cout << "\n";
     }
 }
+=======
+void swap(){
+    cout<<"Enter ";//continue
+}
+>>>>>>> c7385d2a1a090c435eeaa5005d8b112f91a13a6e:Linked List/linked_list_operations_2.cpp

@@ -248,6 +248,28 @@ bool palindrome()
     return true;
 }
 
-void swap(){
-    cout<<"Enter ";//continue
+void swap()
+{
+    int id1, id2, temp_id;
+    float temp_marks;
+    cout << "Enter 1st ID: ";
+    cin >> id1;
+    cout << "Enter 2nd ID: ";
+    cin >> id2;
+    Stu *p1 = search(id1);
+    Stu *p2 = search(id2);
+    if (p1 != NULL && p2 != NULL)
+    {
+        temp_id = p1->id;
+        p1->id = p2->id;
+        p2->id = temp_id;
+        temp_marks = p1->marks;
+        p1->marks = p2->marks;
+        p2->marks = temp_marks;
+    }
+    else
+    {
+        cout << "ID not found\n";
+        cout << "\n";
+    }
 }

@@ -110,14 +110,23 @@ int size()
 
 void recursive(Stu *p)
 {
-    if (p->next != NULL)
+    if (p == NULL)
     {
-        recursive(p->next);
-        cout << "ID: " << p->id << " Marks: " << p->marks << "\n";
+        cout << "No record to show\n";
+        cout << "\n";
+
     }
     else
     {
-        cout << "ID: " << p->id << " Marks: " << p->marks << "\n";
+        if (p->next != NULL)
+        {
+            recursive(p->next);
+            cout << "ID: " << p->id << " Marks: " << p->marks << "\n";
+        }
+        else
+        {
+            cout << "ID: " << p->id << " Marks: " << p->marks << "\n";
+        }
     }
 }
 
@@ -164,18 +173,25 @@ void reverse()
 {
     cout << "\n";
     Stu *p = first, *p2, *k = last;
-    while (k != first)
+    if (p == NULL)
     {
-        while (p != k)
-        {
-            p2 = p;
-            p = p->next;
-        }
-        cout << "ID: " << p->id << "\n";
-        k = p2;
-        p = first;
+        cout << "No record to show\n";
     }
-    cout << "ID: " << p->id << "\n";
+    else
+    {
+        while (k != first)
+        {
+            while (p != k)
+            {
+                p2 = p;
+                p = p->next;
+            }
+            cout << "ID: " << p->id << " Marks: " << p->marks << "\n";
+            k = p2;
+            p = first;
+        }
+        cout << "ID: " << p->id << " Marks: " << p->marks << "\n";
+    }
     cout << "\n";
 }
 
@@ -183,23 +199,30 @@ void alternative()
 {
     cout << "\n";
     Stu *p = first, *p2, *k = last, *p_for = first;
-    while (k != p_for && p_for->next != k)
+    if (p == NULL)
     {
-        cout << "ID: " << p_for->id << "\n";
-        p_for = p_for->next;
-        while (p != k)
-        {
-            p2 = p;
-            p = p->next;
-        }
-        cout << "ID: " << p->id << "\n";
-        k = p2;
-        p = first;
+        cout << "No record to show\n";
     }
-    cout << "ID: " << p_for->id << "\n";
-    if (p_for->next == k)
+    else
     {
-        cout << "ID: " << k->id << "\n";
+        while (k != p_for && p_for->next != k)
+        {
+            cout << "ID: " << p_for->id << "\n";
+            p_for = p_for->next;
+            while (p != k)
+            {
+                p2 = p;
+                p = p->next;
+            }
+            cout << "ID: " << p->id << "\n";
+            k = p2;
+            p = first;
+        }
+        cout << "ID: " << p_for->id << "\n";
+        if (p_for->next == k)
+        {
+            cout << "ID: " << k->id << "\n";
+        }
     }
     cout << "\n";
 }
@@ -220,32 +243,40 @@ bool palindrome()
     int arr_back[length];
 
     Stu *p = first, *p2, *k = last, *p_for = first;
-    while (k != p_for && p_for->next != k)
+    if (p == NULL)
     {
+        cout << "No record to found\n";
+        return false;
+    }
+    else
+    {
+        while (k != p_for && p_for->next != k)
+        {
+            arr_for[count] = p_for->id;
+            p_for = p_for->next;
+            while (p != k)
+            {
+                p2 = p;
+                p = p->next;
+            }
+            arr_back[count] = p->id;
+            k = p2;
+            p = first;
+            count++;
+        }
         arr_for[count] = p_for->id;
-        p_for = p_for->next;
-        while (p != k)
-        {
-            p2 = p;
-            p = p->next;
-        }
-        arr_back[count] = p->id;
-        k = p2;
-        p = first;
-        count++;
-    }
-    arr_for[count] = p_for->id;
-    arr_back[count] = k->id;
-    cout << "\n";
+        arr_back[count] = k->id;
+        cout << "\n";
 
-    for (int i = 0; i < length; i++)
-    {
-        if (arr_for[i] != arr_back[i])
+        for (int i = 0; i < length; i++)
         {
-            return false;
+            if (arr_for[i] != arr_back[i])
+            {
+                return false;
+            }
         }
+        return true;
     }
-    return true;
 }
 
 void swap()

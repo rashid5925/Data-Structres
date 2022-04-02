@@ -2,8 +2,11 @@
 
 using namespace std;
 
-char stack[20];
+char stack[50];
 int top = -1;
+
+int postfix[50];
+int top_post = -1;
 
 void push(char element);
 char pop();
@@ -11,6 +14,8 @@ void display();
 bool check_palindrome();
 void reverse_string();
 bool check_braces();
+string convert_to_postfix();
+double evaluate_postfix();
 
 int main()
 {
@@ -24,6 +29,8 @@ int main()
              << "4. Check palindrome\n"
              << "5. Reverse string\n"
              << "6. Check balanced braces in a expression\n"
+             << "7. Convert expression infix to postfix\n"
+             << "8. Evaluate postfix expression\n"
              << "0. Exit\n";
         cin >> exit;
 
@@ -80,6 +87,18 @@ int main()
             }
             cout << "\n";
             break;
+        case 7:
+            cout << "\n";
+            cout << convert_to_postfix();
+            cout << "\n";
+            cout << "\n";
+            break;
+        case 8:
+            cout << "\n";
+            cout << evaluate_postfix();
+            cout << "\n";
+            cout << "\n";
+            break;
         default:
             cout << "Wrong input\n";
             break;
@@ -116,6 +135,39 @@ char top_char()
     if (top > -1)
     {
         return stack[top];
+    }
+    return c;
+}
+
+void push_int(int element)
+{
+    if (top_post < 20)
+    {
+        postfix[++top_post] = element;
+    }
+    else
+    {
+        cout << "Stack is full\n";
+    }
+}
+
+char pop_int()
+{
+    if (top_post > -1)
+    {
+        return postfix[top_post--];
+    }
+    int a;
+    cout << "Stack empty\n";
+    return a;
+}
+
+int top_int()
+{
+    int c;
+    if (top_post > -1)
+    {
+        return postfix[top_post];
     }
     return c;
 }
@@ -210,7 +262,7 @@ bool check_braces()
         {
             return false;
         }
-        
+
         else if (exp[i] == ')')
         {
             if (top_char() == '(')
@@ -241,4 +293,151 @@ bool check_braces()
         return true;
     }
     return false;
+}
+
+string convert_to_postfix()
+{
+    string exp, out_exp = "";
+    cout << "Enter expression: ";
+    cin >> exp;
+    top = -1;
+    cout << "\n";
+    for (int i = 0; i < exp.length(); i++)
+    {
+        if (exp[i] != '+' && exp[i] != '-' && exp[i] != '*' && exp[i] != '/' && exp[i] != '(' && exp[i] != '{' && exp[i] != '[' && exp[i] != ')' && exp[i] != '}' && exp[i] != ']')
+        {
+            out_exp += exp[i];
+        }
+        else if (exp[i] == '+' || exp[i] == '-')
+        {
+            if (top_char() != '+' && top_char() != '-' && top_char() != '*' && top_char() != '/')
+            {
+                push(exp[i]);
+            }
+            else
+            {
+                while (top != -1 && top_char() != '(' && top_char() != '{' && top_char() != '[' && top_char() != ')' && top_char() != '}' && top_char() != ']')
+                {
+                    out_exp += pop();
+                }
+                push(exp[i]);
+            }
+        }
+        else if (exp[i] == '*' || exp[i] == '/')
+        {
+            if (top_char() != '*' && top_char() != '/')
+            {
+                push(exp[i]);
+            }
+            else
+            {
+                while (top != -1 && top_char() != '+' && top_char() != '-' && top_char() != '(' && top_char() != '{' && top_char() != '[' && top_char() != ')' && top_char() != '}' && top_char() != ']')
+                {
+                    out_exp += pop();
+                }
+                push(exp[i]);
+            }
+        }
+        else if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[')
+        {
+            push(exp[i]);
+        }
+        else if (exp[i] == ')')
+        {
+            do
+            {
+                if (top_char() != '(')
+                {
+                    out_exp += pop();
+                }
+                else
+                {
+                    pop();
+                }
+            } while (top != -1 && top_char() != '(');
+        }
+        else if (exp[i] == '}')
+        {
+            do
+            {
+                if (top_char() != '(' && top_char() != '{')
+                {
+                    out_exp += pop();
+                }
+                else
+                {
+                    pop();
+                }
+            } while (top != -1 && top_char() != '}');
+        }
+        else if (exp[i] == ']')
+        {
+            do
+            {
+                if (top_char() != '(' && top_char() != '{' && top_char() != '[')
+                {
+                    out_exp += pop();
+                }
+                else
+                {
+                    pop();
+                }
+
+            } while (top != -1 && top_char() != '[');
+        }
+    }
+    while (top != -1)
+    {
+        if (top_char() != '(' && top_char() != '{' && top_char() != '[')
+        {
+            out_exp += pop();
+        }
+        else
+        {
+            pop();
+        }
+    }
+    return out_exp;
+}
+
+double evaluate_postfix()
+{
+    string exp, out_exp = "";
+    cout << "Enter expression: ";
+    cin >> exp;
+    top_post = -1;
+    int a, b;
+    cout << "\n";
+    for (int i = 0; i < exp.length(); i++)
+    {
+        if (exp[i] != '+' && exp[i] != '-' && exp[i] != '*' && exp[i] != '/')
+        {
+            push_int(exp[i] - 48);
+        }
+        else if (exp[i] == '+')
+        {
+            a = pop_int();
+            b = pop_int();
+            push_int(b + a);
+        }
+        else if (exp[i] == '-')
+        {
+            a = pop_int();
+            b = pop_int();
+            push_int(b - a);
+        }
+        else if (exp[i] == '*')
+        {
+            a = pop_int();
+            b = pop_int();
+            push_int(b * a);
+        }
+        else if (exp[i] == '/')
+        {
+            a = pop_int();
+            b = pop_int();
+            push_int(b / a);
+        }
+    }
+    return top_int();
 }

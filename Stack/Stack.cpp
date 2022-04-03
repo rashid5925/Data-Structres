@@ -258,11 +258,6 @@ bool check_braces()
             push(exp[i]);
             continue;
         }
-        else if (top == -1)
-        {
-            return false;
-        }
-
         else if (exp[i] == ')')
         {
             if (top_char() == '(')
@@ -316,7 +311,7 @@ string convert_to_postfix()
             }
             else
             {
-                while (top != -1 && top_char() != '(' && top_char() != '{' && top_char() != '[' && top_char() != ')' && top_char() != '}' && top_char() != ']')
+                while (top != -1 && top_char() != '(' && top_char() != '{' && top_char() != '[')
                 {
                     out_exp += pop();
                 }
@@ -331,7 +326,7 @@ string convert_to_postfix()
             }
             else
             {
-                while (top != -1 && top_char() != '+' && top_char() != '-' && top_char() != '(' && top_char() != '{' && top_char() != '[' && top_char() != ')' && top_char() != '}' && top_char() != ']')
+                while (top != -1 && top_char() != '+' && top_char() != '-' && top_char() != '(' && top_char() != '{' && top_char() != '[')
                 {
                     out_exp += pop();
                 }

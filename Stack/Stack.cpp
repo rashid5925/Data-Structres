@@ -104,6 +104,8 @@ int main()
             break;
         }
     } while (exit != 0);
+    
+    return 0;
 }
 
 void push(char element)

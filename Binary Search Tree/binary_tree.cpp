@@ -14,6 +14,7 @@ bst *root = NULL;
 void insert(int x);
 bool search(int x);
 void in_order(bst *p);
+int height(bst *p);
 
 int main()
 {
@@ -24,6 +25,7 @@ int main()
              << "1. Insert\n"
              << "2. Search\n"
              << "3. in_order\n"
+             << "4. Height\n"
              << "0. Exit\n";
         cin >> exit;
 
@@ -58,12 +60,22 @@ int main()
         case 3:
             in_order(root);
             break;
+        case 4:
+            cout << "\n";
+            cout << "Height: " << height(root);
+            cout << "\n";
+            break;
         default:
             cout << "Wrong input\n";
             break;
         }
     } while (exit != 0);
     return 0;
+}
+
+int max(int a, int b)
+{
+    return a > b ? a : b;
 }
 
 void insert(int x)
@@ -130,4 +142,15 @@ bool search(int x)
         }
     }
     return false;
+}
+
+int height(bst *p)
+{
+    if (p == NULL)
+    {
+        return 0;
+    }
+    int left = height(p->left);
+    int right = height(p->right);
+    return max(left, right) + 1;
 }

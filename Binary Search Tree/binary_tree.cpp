@@ -10,11 +10,14 @@ struct bst
 };
 
 bst *root = NULL;
+int n = 0;
 
 void insert(int x);
 bool search(int x);
 void in_order(bst *p);
 int height(bst *p);
+int count_leaf(bst *p);
+
 
 int main()
 {
@@ -26,6 +29,7 @@ int main()
              << "2. Search\n"
              << "3. in_order\n"
              << "4. Height\n"
+             << "5. Count leaf nodes\n"
              << "0. Exit\n";
         cin >> exit;
 
@@ -62,7 +66,13 @@ int main()
             break;
         case 4:
             cout << "\n";
+            n = 0;
             cout << "Height: " << height(root);
+            cout << "\n";
+            break;
+        case 5:
+            cout << "\n";
+            cout << "Number of leaf nodes: " << count_leaf(root);
             cout << "\n";
             break;
         default:
@@ -153,4 +163,19 @@ int height(bst *p)
     int left = height(p->left);
     int right = height(p->right);
     return max(left, right) + 1;
+}
+
+
+int count_leaf(bst *p)
+{
+    if (p != NULL)
+    {
+        if (p->left == NULL && p->right == NULL)
+        {
+            return n++;
+        }
+        count_leaf(p->left);
+        count_leaf(p->right);
+    }
+    return n;
 }

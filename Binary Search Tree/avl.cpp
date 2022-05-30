@@ -12,7 +12,7 @@ struct bst
 bst *root = NULL;
 int n = 0;
 
-void insert(int x);
+bst* insert(bst *node, bst *new_node);
 int remove(int x);
 bool search(int x);
 void in_order(bst *p);
@@ -41,9 +41,12 @@ int main()
         case 1:
             cout << "\n";
             int element;
-            cout << "Enter element too add: ";
+            cout << "Enter element too insert: ";
             cin >> element;
-            insert(element);
+            bst* p;
+            p = new bst;
+            p->id = element;
+            root = insert(root, p);
             cout << "\n";
             break;
         case 2:
@@ -131,128 +134,71 @@ int height (bst *p)
     return max(left, right) + 1;
 }
 
-void rotate_right (bst *p, bst *prev)
+bst* rotate_right (bst *y)
 {
-    if (p == NULL)
-    {
-        return;
-    }
-    bst *q = p->left;
-    bst *temp = q->right;
-    q->right = p;
-    p->left = temp;
-    if (prev != NULL)
-    {
-        if (prev->id > q->id)
-        {
-            prev->left = q;
-        }
-        else
-        {
-            prev->right = q;
-        }
-    }
-    if (p == root)
-    {
-        root = q;
-    }
+    bst *x = y->left;
+    bst *t = x->right;
+
+    x->right = y;
+    y->left = t;
+
+    return x;
 }
 
-void rotate_left (bst *p, bst *prev)
+bst* rotate_left (bst *y)
 {
-    if (p == NULL)
-    {
-        return;
-    }
-    bst *q = p->right;
-    bst * temp = q->left;
-    q->left = p;
-    p->right = temp;
-    if (prev != NULL)
-    {
-        if (prev->id > q->id)
-        {
-            prev->left = q;
-        }
-        else
-        {
-            prev->right = q;
-        }
-    }
-    if (p == root)
-    {
-        root = q;
-    }
+    bst *x = y->right;
+    bst *t = x->left;
+
+    x->left = y;
+    y->right = t;
+
+    return x;
 }
 
-void insert (int x)
+bst* insert (bst *node, bst *new_node)
 {
-    bst *p = new bst;
-    p->id = x;
-    if (root == NULL)
+    if (node == NULL)
     {
-        root = p;
-        return;
+        return new_node;
     }
-    bst *curr = root;
-    bst *prev = NULL;
-    bst *prev_prev = NULL;
-    bst *prev_3 = NULL;
-    while (curr != NULL)
+    else if (node->id > new_node->id)
     {
-        prev_3 = prev_prev;
-        prev_prev = prev;
-        prev = curr;
-        if (curr->id > x)
-        {
-            curr = curr->left;
-        }
-        else
-        {
-            curr = curr->right;
-        }
+        node->left = insert(node->left, new_node);
     }
-    if (prev->id > x)
+    else if (node->id < new_node->id)
     {
-        prev->left = p;
-    }
-    else
-    {
-        prev->right = p;
-    }
-    int balance_factor;
-    if (prev_prev != NULL)
-    {
-        balance_factor = height(prev_prev->left) - height(prev_prev->right);
-    }
-    else
-    {
-        balance_factor = 0;
+        node->right = insert(node->right, new_node);
     }
     
+    int balance_factor = height(node->left) - height(node->right);
+
     //LL
-    if (balance_factor > 1 && x < prev->id)
+    if (balance_factor > 1 && new_node->id < node->left->id)
     {
-        rotate_right(prev_prev, prev_3);
+        return rotate_right(node);
     }
-    //LR
-    else if (balance_factor > 1 && x > prev->id)
-    {
-        rotate_left(prev, prev_prev);
-        rotate_right(prev_prev, prev_3);
-    }
+
     //RR
-    else if (balance_factor < -1 && x > prev->id)
+    if (balance_factor < -1 && new_node->id > node->right->id)
     {
-        rotate_left(prev_prev, prev_3);
+        return rotate_left(node);
     }
+
+    //LR
+    if (balance_factor > 1 && new_node->id > node->left->id)
+    {
+        node->left = rotate_left(node);
+        return rotate_right(node);
+    }
+
     //RL
-    else if (balance_factor < -1 && x < prev->id)
+    if (balance_factor < -1 && new_node->id < node->right->id)
     {
-        rotate_right(prev, prev_prev);
-        rotate_left(prev_prev, prev_3);
+        node->right = rotate_right(node);
+        return rotate_left(node);
     }
-    
+    return node;
 }
 
 int remove (int x)

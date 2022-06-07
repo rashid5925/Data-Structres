@@ -1,5 +1,4 @@
 #include <iostream>
-
 using namespace std;
 
 class Que
@@ -224,21 +223,24 @@ void graphs::dijkstra(int ver, int to)
 {
     int min;
     int prev = 0;
-    int dist[vertices];
+    int dist[vertices][vertices];
     int ind = ver;
     for (int i = 0; i < vertices; i++)
     {
         visited[i] = 0;
         if (matrix[ver][i] != 0)
-        {
-            dist[i] = matrix[ver][i];
-        }
-        else
-        {
-            dist[i] = -1;
-        }
+	    {
+	    	dist[i][0] = i;
+	        dist[i][1] = matrix[ver][i];
+	    }
+	    else
+	    {
+	        dist[i][0] = -1;
+	        dist[i][1] = -1;
+	    }
     }
-    dist[ver] = 0;
+    dist[ver][ver] = 0;
+    dist[ver][ver + 1] = 0;
     visited[ver] = 1;
     for (int i = 0; i < vertices; i++)
     {
@@ -253,39 +255,40 @@ void graphs::dijkstra(int ver, int to)
                 ind = j;
             }
         }
-        if (dist[ind] == -1)
+        if (dist[ind][0] == -1 || dist[ind][1] > prev)
         {
-            dist[ind] = prev;
-        } else if (dist[ind] > prev)
-        {
-            dist[ind] = prev;
+            dist[ind][0] = ind;
+			dist[ind][1] = prev;
         }
     }
     for (int i = 0; i < to; i++)
     {
-        cout << dist[i] << " ";
-    }  
+    	cout << "Edge: " << dist[i][0] << " Distance: " << dist[i][1] << "\n";
+	}  
 }
 
 void graphs::prims(int ver)
 {
     int min;
     int prev = 0;
-    int dist[vertices];
+    int dist[vertices][vertices];
     int ind = ver;
     for (int i = 0; i < vertices; i++)
     {
         visited[i] = 0;
         if (matrix[ver][i] != 0)
-        {
-            dist[i] = matrix[ver][i];
-        }
-        else
-        {
-            dist[i] = -1;
-        }
+	    {
+	    	dist[i][0] = i;
+	        dist[i][1] = matrix[ver][i];
+	    }
+	    else
+	    {
+	        dist[i][0] = -1;
+	        dist[i][1] = -1;
+	    }
     }
-    dist[ver] = 0;
+    dist[ver][ver] = 0;
+    dist[ver][ver + 1] = 0;
     visited[ver] = 1;
     for (int i = 0; i < vertices; i++)
     {
@@ -300,17 +303,15 @@ void graphs::prims(int ver)
                 ind = j;
             }
         }
-        if (dist[ind] == -1)
+        if (dist[ind][0] == -1 || dist[ind][1] > prev)
         {
-            dist[ind] = min;
-        } else if (dist[ind] > prev)
-        {
-            dist[ind] = min;
-        }
+        	dist[ind][0] = ind;
+			dist[ind][1] = min;
+        } 
     }
     for (int i = 0; i < vertices; i++)
     {
-        cout << dist[i] << " ";
+        cout << "Edge: " << dist[i][0] << " Distance: " << dist[i][1] << "\n";
     }  
 }
 

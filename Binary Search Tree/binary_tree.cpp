@@ -17,6 +17,7 @@ bool search(int x);
 void in_order(bst *p);
 int height(bst *p);
 int count_leaf(bst *p);
+void remove (int key);
 
 
 int main()
@@ -30,6 +31,7 @@ int main()
              << "3. in_order\n"
              << "4. Height\n"
              << "5. Count leaf nodes\n"
+             << "6. Delete\n"
              << "0. Exit\n";
         cin >> exit;
 
@@ -73,6 +75,13 @@ int main()
         case 5:
             cout << "\n";
             cout << "Number of leaf nodes: " << count_leaf(root);
+            cout << "\n";
+            break;
+        case 6:
+            cout << "\n";
+            cout << "Enter element too delete: ";
+            cin >> element;
+            remove(element);
             cout << "\n";
             break;
         default:
@@ -178,4 +187,96 @@ int count_leaf(bst *p)
         count_leaf(p->right);
     }
     return n;
+}
+
+void remove (int key)
+{
+    bst *p = root, *p1;
+    while (p != NULL && p->id != key)
+    {
+        p1 = p;
+        if (p->id < key)
+        {
+            p = p->right;
+        } else 
+        {
+            p = p->left;
+        }
+    }
+    
+    //not found
+    if (p == NULL)
+    {
+        cout << "ID not found\n";
+        return;
+    }
+    //no branch
+    else if (p->left == NULL && p->right == NULL)
+    {
+        if (p == p1->left)
+        {
+            p1->left = NULL;
+            delete p;
+        } else
+        {
+            p1->right = NULL;
+            delete p;
+        }
+    }
+    //one branch
+    else if (p->right == NULL || p->left == NULL)
+    {
+        if (p->left == p)
+        {
+            if (p->right == NULL)
+            {
+                p1->left = p->left;
+                delete p;
+            }
+            else
+            {
+                p1->left = p->right;
+                delete p;
+            }
+            
+        }
+        else 
+        {
+            if (p1->left == NULL)
+            {
+                p1->right = p->right;
+                delete p;
+            }
+            else
+            {
+                p1->right = p->left;
+                delete p;
+            }
+            
+        }
+    }
+    //two branches
+    else
+    {
+        p1 = p->right;
+        bst *p2 = NULL, *p3 = NULL;
+        while (p1 != NULL)
+        {
+            p3 = p2;
+            p2 = p1;
+            p1 = p1->left;
+        }
+        if (p3 == NULL)
+        {
+            p->id = p2->id;
+            p->right = NULL;
+            delete p2;
+        }
+        else
+        {
+            p->id = p2->id;
+            p3->left = p2->right;
+            delete p2;
+        }
+    }
 }

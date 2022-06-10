@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ void in_order(bst *p);
 int height(bst *p);
 int count_leaf(bst *p);
 void remove (int key);
+void level_order(bst *p);
 
 
 int main()
@@ -28,10 +30,11 @@ int main()
         cout << "Enter number to perform operation\n"
              << "1. Insert\n"
              << "2. Search\n"
-             << "3. in_order\n"
+             << "3. In order traversal\n"
              << "4. Height\n"
              << "5. Count leaf nodes\n"
              << "6. Delete\n"
+             << "7. Level order traversal\n"
              << "0. Exit\n";
         cin >> exit;
 
@@ -83,6 +86,9 @@ int main()
             cin >> element;
             remove(element);
             cout << "\n";
+            break;
+        case 7:
+            level_order(root);
             break;
         default:
             cout << "Wrong input\n";
@@ -278,5 +284,30 @@ void remove (int key)
             p3->left = p2->right;
             delete p2;
         }
+    }
+}
+
+void level_order(bst *p)
+{
+    if (p == NULL)
+    {
+        return;
+    }
+    bst *curr;
+    queue<bst *> Q;
+    Q.push(p);
+    while (!Q.empty())
+    {
+        curr = Q.front();
+        cout << "ID: " << curr->id << endl;
+        if (curr->left != NULL)
+        {
+            Q.push(curr->left);
+        }
+        if (curr->right != NULL)
+        {
+            Q.push(curr->right);
+        }
+        Q.pop();
     }
 }

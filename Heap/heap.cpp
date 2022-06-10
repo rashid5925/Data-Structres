@@ -82,17 +82,17 @@ int remove()
     int i = 0;
     int smaller = 0;
     int temp;
-    while (last > (2 * i + 1) || last > (2 * i + 2))
+    while (last > i)
     {
-        if (last > (2 * i + 1) && last > (2 * i + 2))
+        if (last >= (2 * i + 1) && last >= (2 * i + 2))
         {
             smaller = heap[2 * i + 1] < heap[2 * i + 2] ? (2 * i + 1) : (2 * i + 2);
         }
-        else if (last > (2 * i + 1))
+        else if (last >= (2 * i + 1))
         {
             smaller = 2 * i + 1;
         }
-        else
+        else if (last >= (2 * i + 2))
         {
             smaller = 2 * i + 2;
         }

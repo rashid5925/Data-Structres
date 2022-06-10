@@ -175,7 +175,7 @@ void graphs::BFS2(int ver)
         cout << ver << " ";
         for (int i = 0; i < vertices; i++)
         {
-            if (!visited[i] && matrix[ver][i])
+            if (!visited[i] && matrix[ver][i] != 0)
             {
                 q.enqueue(i);
                 visited[i] = 1;
@@ -362,7 +362,7 @@ int main()
     g.BFS(1);
     cout << "\n\n";
 
-    cout << "BFS\n";
+    cout << "BFS2\n";
     g.BFS2(1);
     cout << "\n\n";
 

@@ -21,6 +21,11 @@ public:
         que = new int[size];
     }
 
+    int top ()
+    {
+        return que[front];
+    }
+
     bool is_full()
     {
         if ((rear + 1) % size == front)
@@ -113,6 +118,7 @@ public:
     void add_edge(int n1, int n2, int weight);
     void display();
     void BFS(int ver);
+    void BFS2(int ver);
     void DFS(int ver);
     void dijkstra(int ver, int to);
     void prims(int ver);
@@ -150,6 +156,32 @@ void graphs::display()
             cout << matrix[i][j] << " ";
         }
         cout << "\n";
+    }
+}
+
+void graphs::BFS2(int ver)
+{
+    Que q(100);
+    int visited[vertices];
+    for (int i = 0; i < vertices; i++)
+    {
+        visited[i] = 0;
+    }
+    visited[ver] = 1;
+    q.enqueue(ver);
+    while (!q.is_empty())
+    {
+        ver = q.dequeue();
+        cout << ver << " ";
+        for (int i = 0; i < vertices; i++)
+        {
+            if (!visited[i] && matrix[ver][i])
+            {
+                q.enqueue(i);
+                visited[i] = 1;
+            }
+        }
+        
     }
 }
 
@@ -328,6 +360,10 @@ int main()
     cout << "\n";
     cout << "BFS\n";
     g.BFS(1);
+    cout << "\n\n";
+
+    cout << "BFS\n";
+    g.BFS2(1);
     cout << "\n\n";
 
     cout << "DFS\n";

@@ -145,7 +145,7 @@ int height (bst *p)
 {
     if (p == NULL)
     {
-        return 0;
+        return -1;
     }
     int left = height(p->left);
     int right = height(p->right);
@@ -209,14 +209,14 @@ bst* balance (bst *node, bst *new_node)
         //LR
         if (balance_factor > 1 && new_node->id > node->left->id)
         {
-            node->left = rotate_left(node);
+            node->left = rotate_left(node->left);
             return rotate_right(node);
         }
 
         //RL
         if (balance_factor < -1 && new_node->id < node->right->id)
         {
-            node->right = rotate_right(node);
+            node->right = rotate_right(node->right);
             return rotate_left(node);
         }
     }
@@ -256,14 +256,14 @@ bst* insert (bst *node, bst *new_node)
     //LR
     if (balance_factor > 1 && new_node->id > node->left->id)
     {
-        node->left = rotate_left(node);
+        node->left = rotate_left(node->left);
         return rotate_right(node);
     }
 
     //RL
     if (balance_factor < -1 && new_node->id < node->right->id)
     {
-        node->right = rotate_right(node);
+        node->right = rotate_right(node->right);
         return rotate_left(node);
     }
     return node;

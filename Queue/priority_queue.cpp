@@ -65,31 +65,24 @@ public:
     {
         if (is_full())
         {
-            cout << "No space\n";
+            cout << "Queue is full\n";
+            return;
         }
-        else
+        if (is_empty())
         {
-            int i;
-            if (is_empty())
-            {
-                front = rear = i = 0;
-            }
-            else
-            {
-                i = front;
-                while (i <= rear && que[i] > x)
-                {
-                    i++;
-                }
-                int k = rear;
-                while (k >= i)
-                {
-                    que[k + 1] = que[k];
-                    k--;
-                }
-                rear++;
-            }
-            que[i] = x;
+            front = rear = 0;
+            que[rear] = x;
+            return;
+        }
+        que[++rear] = x;
+        int temp;
+        int i = rear;
+        while (i > 0 && que[i - 1] > que[i])
+        {
+            temp = que[i - 1];
+            que[i - 1] = que[i];
+            que[i] = temp;
+            i--;
         }
     }
 

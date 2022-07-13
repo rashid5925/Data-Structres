@@ -1,5 +1,4 @@
 #include <iostream>
-
 using namespace std;
 
 class Que
@@ -75,11 +74,10 @@ public:
             return;
         }
         que[++rear] = x;
-        int temp;
         int i = rear;
         while (i > 0 && que[i - 1] > que[i])
         {
-            temp = que[i - 1];
+            int temp = que[i - 1];
             que[i - 1] = que[i];
             que[i] = temp;
             i--;
@@ -139,21 +137,21 @@ int main()
         case 1:
             cout << "\n";
             int element;
-            cout << "Enter element too Enqueue: ";
+            cout << "Enter element to Enqueue: ";
             cin >> element;
             que.enqueue(element);
             cout << "\n";
             break;
         case 2:
             cout << "\n";
-            cout << "Dequeued element is: " << que.dequeue() << "\n";
+            cout << "The Element Dequeued Is: " << que.dequeue() << "\n";
             cout << "\n";
             break;
         case 3:
             que.display();
             break;
         default:
-            cout << "Wrong input\n";
+            cout << "Wrong Input\n";
             break;
         }
     } while (exit != 0);
